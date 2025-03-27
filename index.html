@@ -11,34 +11,70 @@
 </head>
 <body>
   <header>
-    <nav>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="profile.html">Profile</a></li>
-        <li><a href="checkout.html">Checkout</a></li>
-      </ul>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="#">MusicStream</a>
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="profile.html">Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="checkout.html">Checkout</a>
+          </li>
+        </ul>
+      </div>
     </nav>
   </header>
 
+  <!-- Home message -->
   <div class="container">
-    <h1>Welcome to MusicStream</h1>
-    <p>Discover and stream music from your favorite artists and albums.</p>
+    <h1>Welcome, User</h1>
+    <p>View some of our featured artists and albums.</p>
+  </div>
+
+  <!-- Artists -->
+  <div class="container">
     <section id="artists">
-      <div class="artist">
-        <img src="https://placehold.co/400x400" alt="Artist 1" width="150" height="150">
-        <h3>Artist 1</h3>
+      <div class="artist card">
+        <div class="card-body">
+          <img src="https://placehold.co/400x400" alt="Artist 1" width="150" height="150">
+          <h3>Artist 1</h3>
+        </div>
       </div>
-      <div class="artist">
-        <img src="https://placehold.co/400x400" alt="Artist 2" width="150" height="150">
-        <h3>Artist 2</h3>
+      <div class="artist card">
+        <div class="card-body">
+          <img src="https://placehold.co/400x400" alt="Artist 2" width="150" height="150">
+          <h3>Artist 2</h3>
+        </div>
       </div>
-      <!-- More artists can be added here -->
+      <div class="artist card">
+        <div class="card-body">
+          <img src="https://placehold.co/400x400" alt="Artist 3" width="150" height="150">
+          <h3>Artist 3</h3>
+        </div>
+      </div>
     </section>
+  </div>
+
+  <!-- Featured Album -->
+  <div class="container my-4">
+    <div class="card">
+      <img class="card-img-left featured-album" src="https://placehold.co/400x400" alt="Artist 3" width="150" height="150">
+      <div class="card-body">
+        <h5 class="card-title">Featured Album</h5>
+        <p class="card-text">Album description here...</p>
+        <a href="#" class="btn btn-primary">Listen Now</a>
+      </div>
+    </div>
   </div>
 
   <!-- Music Player UI across pages -->
   <footer>
-    <div id="music-player">
+    <div id="music-player" class="player fixed-bottom bg-dark text-white p-3">
       <audio controls>
         <source src="sample.mp3" type="audio/mpeg">
         Your browser does not support the audio element.

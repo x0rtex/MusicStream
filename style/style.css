@@ -35,6 +35,12 @@ main {
     border-radius: 50%;
 }
 
+/* Artist card styling */
+.featured-album {
+    float: left;
+    display: flex;
+}
+
 /* Music player styling */
 #music-player {
     position: fixed;
