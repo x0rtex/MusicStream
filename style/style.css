@@ -38,7 +38,6 @@ main {
 /* Artist card styling */
 .featured-album {
     float: left;
-    display: flex;
 }
 
 /* Music player styling */
