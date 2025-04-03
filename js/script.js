@@ -11,7 +11,7 @@ function fetchArtists() {
           <div class="card-body">
             <img src="${artist.ImageURL || placeholderImg}" alt="${artist.Name}" width="150" height="150">
             <h3 style="word-wrap: break-word;">
-              <a href="artist.html?id=${artist.id}">${artist.Name}</a>
+              <a href="artist.html?id=${artist.ArtistID}">${artist.Name}</a>
             </h3>          
           </div>
         </div>
