@@ -10,7 +10,9 @@ function fetchArtists() {
         <div class="artist card">
           <div class="card-body">
             <img src="${artist.ImageURL || placeholderImg}" alt="${artist.Name}" width="150" height="150">
-            <h3 style="word-wrap: break-word;">${artist.Name}</h3>
+            <h3 style="word-wrap: break-word;">
+              <a href="artist.html?id=${artist.id}">${artist.Name}</a>
+            </h3>          
           </div>
         </div>
       `).join('');
@@ -20,6 +22,7 @@ function fetchArtists() {
 // Function to fetch featured album
 function fetchFeaturedAlbum() {
     fetch(`${apiEndpoint}/random-album`)
+    
     .then(response => response.json())
     .then(({ ImageURL, Title }) => {
       const featuredAlbumContainer = document.getElementById('featured-album');
