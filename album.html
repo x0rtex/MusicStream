@@ -3,38 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Album</title>
+    <title>Album - MusicStream</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
-    <style>
-      body {
-        padding-bottom: 60px;
-      }
-      .song-card {
-        cursor: pointer;
-        transition: all 0.3s ease;
-      }
-      .song-card:hover {
-        background-color: #f8f9fa;
-      }
-      .fixed-player {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: white;
-        padding: 10px;
-        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-        z-index: 1000;
-      }
-    </style>
+    <link rel="stylesheet" href="css/styles.css" />
   </head>
   <body>
-    <header>
-      <!-- Navigation Bar -->
-      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
         <a class="navbar-brand" href="index.html">MusicStream</a>
         <div class="collapse navbar-collapse">
           <ul class="navbar-nav ms-auto">
@@ -49,171 +27,33 @@
             </li>
           </ul>
         </div>
-      </nav>
-    </header>
+      </div>
+    </nav>
 
-    <div class="container mt-5">
-      <!-- Album title and details will be displayed here -->
+    <main class="container my-5">
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-4 mb-4">
           <img
-            id="album-image"
-            src=""
-            alt="Album Image"
+            id="album-artwork"
             class="img-fluid rounded shadow"
+            style="max-width: 300px"
+            alt="Album artwork"
           />
         </div>
         <div class="col-md-8">
-          <h1 id="album-title">Album Title</h1>
-          <h4 id="album-artist" class="text-muted">Artist Name</h4>
-          <p id="release-year" class="text-muted">Release Year:</p>
-          <p id="album-genre" class="text-muted">Genre:</p>
+          <h1 id="album-title" class="display-4 mb-3"></h1>
+          <div class="d-flex gap-3 mb-4">
+            <p id="album-year" class="text-muted"></p>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="container mt-5">
-      <h3>Songs</h3>
+      <h3 class="mb-4">Track List</h3>
       <div id="songs-list" class="list-group"></div>
-    </div>
-
-    <!-- Fixed audio player at the bottom -->
-    <div class="fixed-player">
-      <div class="container">
-        <audio id="player" controls class="w-100"></audio>
-      </div>
-    </div>
-
-    <script>
-      const apiEndpoint =
-        "https://0lb1o3drhc.execute-api.us-east-1.amazonaws.com/dev";
-      const placeholderImg = "https://placehold.co/600x600?text=No+Image";
-
-      // Get album ID and ArtistID from the URL query parameters
-      const params = new URLSearchParams(window.location.search);
-      const albumId = params.get("AlbumID");
-      const artistId = params.get("ArtistID");
-
-      // Check if both AlbumID and ArtistID are present in the URL
-      if (!albumId || !artistId) {
-        document.body.innerHTML =
-          "<h1 class='container mt-5'>Album ID or Artist ID is missing in the URL</h1>";
-      } else {
-        // Fetch album details
-        fetch(`${apiEndpoint}/albums?AlbumID=${albumId}&ArtistID=${artistId}`)
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error("Network response was not ok");
-            }
-            return response.json();
-          })
-          .then((data) => {
-            // Check if we got an array or single object
-            const album = Array.isArray(data) ? data[0] : data;
-
-            if (!album || album.error) {
-              document.body.innerHTML =
-                "<h1 class='container mt-5'>Album not found</h1>";
-              return;
-            }
-
-            // Set album details
-            document.getElementById("album-title").innerText =
-              album.Title || "Unknown Album";
-            document.getElementById("album-artist").innerText =
-              album.ArtistName || "Unknown Artist";
-            document.getElementById(
-              "release-year"
-            ).innerText = `Release Year: ${album.ReleaseYear || "Unknown"}`;
-            document.getElementById("album-genre").innerText = `Genre: ${
-              album.Genre || "Unknown"
-            }`;
-            document.getElementById("album-image").src =
-              album.ImageURL || placeholderImg;
-
-            // Check if we have songs in the album data
-            if (album.Songs && album.Songs.length > 0) {
-              displaySongs(album.Songs);
-            } else {
-              // If no songs in album data, try to fetch separately
-              fetch(`${apiEndpoint}/songs?AlbumID=${albumId}`)
-                .then((response) => response.json())
-                .then((songs) => {
-                  if (songs.length === 0) {
-                    document.getElementById("songs-list").innerHTML =
-                      "<p class='text-muted'>No songs found for this album.</p>";
-                    return;
-                  }
-                  displaySongs(songs);
-                })
-                .catch((error) => {
-                  console.error("Error fetching songs:", error);
-                  document.getElementById("songs-list").innerHTML =
-                    "<p class='text-danger'>Error loading songs.</p>";
-                });
-            }
-          })
-          .catch((error) => {
-            console.error("Error fetching album data:", error);
-            document.body.innerHTML =
-              "<h1 class='container mt-5'>Failed to load album data</h1>";
-          });
-      }
-
-      function displaySongs(songs) {
-        const songsList = document.getElementById("songs-list");
-        songsList.innerHTML = songs
-          .map(
-            (song, index) => `
-              <div class="list-group-item song-card" onclick="playSong('${
-                song.SongURL
-              }', ${index})">
-                <div class="d-flex justify-content-between align-items-center">
-                  <div>
-                    <h5 class="mb-1">${song.Title || "Unknown Song"}</h5>
-                    <small class="text-muted">${formatDuration(
-                      song.Duration
-                    )}</small>
-                  </div>
-                  <span class="badge bg-primary rounded-pill">${
-                    index + 1
-                  }</span>
-                </div>
-              </div>
-            `
-          )
-          .join("");
-
-        // Play first song automatically if there are songs
-        if (songs.length > 0 && songs[0].SongURL) {
-          playSong(songs[0].SongURL, 0);
-        }
-      }
-
-      function formatDuration(seconds) {
-        if (!seconds) return "0:00";
-        const mins = Math.floor(seconds / 60);
-        const secs = seconds % 60;
-        return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
-      }
-
-      // Play song function
-      function playSong(url, index) {
-        if (!url) return;
-
-        const player = document.getElementById("player");
-        player.src = url;
-        player.play();
-
-        // Highlight the playing song
-        const songCards = document.querySelectorAll(".song-card");
-        songCards.forEach((card) => card.classList.remove("active"));
-        if (index >= 0) {
-          songCards[index].classList.add("active");
-        }
-      }
-    </script>
+    </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/album.js"></script>
   </body>
 </html>
