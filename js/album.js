@@ -1,57 +1,57 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const params = new URLSearchParams(window.location.search);
-  const albumId = params.get("AlbumID");
-  const artistId = params.get("ArtistID");
+    const params = new URLSearchParams(window.location.search);
+    const albumId = params.get("AlbumID");
+    const artistId = params.get("ArtistID");
 
-  if (!albumId || !artistId) {
-    showError("Missing album or artist information");
-    return;
-  }
+    if (!albumId || !artistId) {
+        showError("Missing album or artist information.");
+        return;
+    }
 
-  // Fetch album details
-  fetch(`${apiEndpoint}/albums?AlbumID=${albumId}&ArtistID=${artistId}`)
-    .then(handleResponse)
-    .then((albums) => {
-      updateAlbumInfo(albums[0]);
-      document.title = albums[0].Title || "MusicStream";
-    })
-    .catch(handleError);
+    // Fetch album details
+    fetch(`${apiEndpoint}/albums?AlbumID=${albumId}&ArtistID=${artistId}`)
+        .then(handleResponse)
+        .then((albums) => {
+            updateAlbumInfo(albums[0]);
+            document.title = albums[0].Title || "MusicStream";
+        })
+        .catch(handleError);
 
-  // Fetch songs
-  fetch(`${apiEndpoint}/songs?AlbumID=${albumId}`)
-    .then(handleResponse)
-    .then((data) => renderTracks(data.Songs || []))
-    .catch(handleError);
+    // Fetch songs
+    fetch(`${apiEndpoint}/songs?AlbumID=${albumId}`)
+        .then(handleResponse)
+        .then((data) => renderTracks(data.Songs || []))
+        .catch(handleError);
 });
 
 function updateAlbumInfo(album) {
-  if (!album || typeof album !== "object") {
-    showError("Album data is malformed or missing.");
-    return;
-  }
+    if (!album || typeof album !== "object") {
+        showError("Album data is malformed or missing.");
+        return;
+    }
 
-  // Get album details or use "Unknown" values if missing
-  const albumTitle = album.Title || "Unknown Album Title";
-  const releaseYear = album.ReleaseYear || "Unknown Release Year";
-  const imageURL = getAlbumImageUrl(album.AlbumID) || "https://placehold.co/600x600?text=No+Image";
+    // Get album details or use "Unknown" values if missing
+    const albumTitle = album.Title || "Unknown Album Title";
+    const releaseYear = album.ReleaseYear || "Unknown Release Year";
+    const imageURL = getAlbumImageUrl(album.AlbumID) || "https://placehold.co/600x600?text=No+Image";
 
-  // Update DOM with the album details (excluding artist name and genre)
-  document.getElementById("album-title").textContent = albumTitle;
-  document.getElementById("album-year").textContent = `Year: ${releaseYear}`;
-  document.getElementById("album-artwork").src = imageURL;
+    // Update DOM with the album details (excluding artist name and genre)
+    document.getElementById("album-title").textContent = albumTitle;
+    document.getElementById("album-year").textContent = `Year: ${releaseYear}`;
+    document.getElementById("album-artwork").src = imageURL;
 }
 
 function renderTracks(songs) {
-  const container = document.getElementById("songs-list");
+    const container = document.getElementById("songs-list");
 
-  if (!songs.length) {
-    container.innerHTML = `<div class="alert alert-info">No tracks available</div>`;
-    return;
-  }
+    if (!songs.length) {
+        container.innerHTML = `<div class="alert alert-info">No tracks available</div>`;
+        return;
+    }
 
-  container.innerHTML = songs
-    .map(
-      (song, index) => `
+    container.innerHTML = songs
+        .map(
+            (song, index) => `
       <div class="song-list-item list-group-item">
           <div class="d-flex justify-content-between align-items-center">
               <div class="d-flex align-items-center">
@@ -67,30 +67,30 @@ function renderTracks(songs) {
           </div>
       </div>
   `
-    )
-    .join("");
+        )
+        .join("");
 }
 
 function playTrack(url) {
-  const player = document.getElementById("player");
-  if (player) {
-    player.src = url;
-    player.play();
-  }
+    const player = document.getElementById("player");
+    if (player) {
+        player.src = url;
+        player.play();
+    }
 }
 
 function handleResponse(response) {
-  if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-  return response.json();
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    return response.json();
 }
 
 function handleError(error) {
-  console.error("Error:", error);
-  showError(`Failed to load data: ${error.message}`);
+    console.error("Error:", error);
+    showError(`Failed to load data: ${error.message}`);
 }
 
 function showError(message) {
-  document.body.innerHTML = `
+    document.body.innerHTML = `
       <div class="container mt-5">
           <div class="alert alert-danger">${message}</div>
           <a href="index.html" class="btn btn-primary">Back to Home</a>
@@ -99,8 +99,8 @@ function showError(message) {
 }
 
 function formatDuration(seconds) {
-  if (!seconds) return "0:00";
-  const mins = Math.floor(seconds / 60);
-  const secs = seconds % 60;
-  return `${mins}:${secs.toString().padStart(2, "0")}`;
+    if (!seconds) return "0:00";
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
 }
