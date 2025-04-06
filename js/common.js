@@ -23,6 +23,22 @@ function initializePlayer() {
   }
 }
 
+function getArtistImageUrl(artistId) {
+  return `https://music-stream-cc.s3.us-east-1.amazonaws.com/media/images/artists/${artistId}.webp`;
+}
+
+function getAlbumImageUrl(albumId) {
+  return `https://music-stream-cc.s3.us-east-1.amazonaws.com/media/images/albums/${albumId}.webp`;
+}
+
+function getSongImageUrl(songId) {
+  return `https://music-stream-cc.s3.us-east-1.amazonaws.com/media/images/songs/${songId}.webp`;
+}
+
+function getSongAudioUrl(songId) {
+  return `https://music-stream-cc.s3.us-east-1.amazonaws.com/media/audio/songs/${songId}.mp3`;
+}
+
 // Add audio player to every page
 document.addEventListener("DOMContentLoaded", () => {
   initializePlayer();

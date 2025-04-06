@@ -13,7 +13,7 @@ function fetchDisplayArtists() {
                 .map((artist) => `
                     <div class="col-md-3">
                       <div class="artist-card card h-100">
-                        <img src="${artist.ImageURL || placeholderImg}" 
+                        <img src="${getArtistImageUrl(artist.ArtistID) || placeholderImg}" 
                              class="card-img-top" 
                              alt="${artist.Name}">
                         <div class="card-body text-center">

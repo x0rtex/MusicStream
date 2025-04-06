@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Update the artist header with the artist's name and image
         document.getElementById("artist-name").textContent = artist.Name;
         document.getElementById("artist-image").src =
-          artist.ImageURL || placeholderImg;
+          getArtistImageUrl(artist.ArtistID) || placeholderImg;
       } else {
         document.getElementById("artist-name").textContent = "Artist not found";
       }
@@ -46,13 +46,11 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="col-md-4">
           <div class="album-card card h-100">
             <img src="${
-              album.ImageURL || placeholderImg
+              getAlbumImageUrl(album.AlbumID) || placeholderImg
             }" class="card-img-top" alt="${album.Title}">
             <div class="card-body text-center">
               <h5 class="card-title">
-                <a href="album.html?AlbumID=${album.AlbumID}&ArtistID=${
-            album.ArtistID
-          }" 
+                <a href="album.html?AlbumID=${album.AlbumID}&ArtistID=${album.ArtistID}" 
                    class="stretched-link text-decoration-none">
                   ${album.Title}
                 </a>

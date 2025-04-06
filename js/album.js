@@ -36,9 +36,8 @@ function updateAlbumInfo(album) {
 
   // Get album details or use "Unknown" values if missing
   const albumTitle = album.Title || "Unknown Album Title";
-  const releaseYear = album.ReleaseYear || "Unknown";
-  const imageURL =
-    album.ImageURL || "https://placehold.co/600x600?text=No+Image"; // Ensure fallback image
+  const releaseYear = album.ReleaseYear || "Unknown Release Year";
+  const imageURL = getAlbumImageUrl(album.AlbumID) || "https://placehold.co/600x600?text=No+Image";
 
   // Update DOM with the album details (excluding artist name and genre)
   document.getElementById("album-title").textContent = albumTitle;
@@ -63,16 +62,11 @@ function renderTracks(songs) {
       <div class="list-group-item">
           <div class="d-flex justify-content-between align-items-center">
               <div>
-                  <h5 class="mb-1">${index + 1}. ${
-        song.Title || "Untitled Track"
-      }</h5>
-                  <small class="text-muted">${formatDuration(
-                    song.Duration
-                  )}</small>
+                  <h5 class="mb-1">${index + 1}. ${song.Title || "Untitled Track"}</h5>
+                  <small class="text-muted">${formatDuration(song.Duration)}</small>
               </div>
-              <button class="btn btn-sm btn-primary" 
-                      onclick="playTrack('${song.SongURL}')">
-                  Play
+              <button class="btn btn-sm btn-primary" onclick="playTrack('${getSongAudioUrl(song.SongID)}')">
+                Play
               </button>
           </div>
       </div>
