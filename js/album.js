@@ -82,7 +82,7 @@ function renderTracks(songs) {
 }
 
 function playTrack(url) {
-  const player = document.getElementById("global-player");
+  const player = document.getElementById("player");
   if (player) {
     player.src = url;
     player.play();
