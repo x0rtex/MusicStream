@@ -3,9 +3,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const albumId = params.get("AlbumID");
   const artistId = params.get("ArtistID");
 
-  // Log the parameters to make sure they are being parsed correctly
-  console.log("AlbumID:", albumId, "ArtistID:", artistId);
-
   if (!albumId || !artistId) {
     showError("Missing album or artist information");
     return;
@@ -15,8 +12,6 @@ document.addEventListener("DOMContentLoaded", () => {
   fetch(`${apiEndpoint}/albums?AlbumID=${albumId}&ArtistID=${artistId}`)
     .then(handleResponse)
     .then((albums) => {
-      console.log("Album data received:", albums); // Log the album array
-      // Use the first album in the array if multiple are returned
       updateAlbumInfo(albums[0]);
       document.title = albums[0].Title || "MusicStream";
     })
@@ -44,9 +39,6 @@ function updateAlbumInfo(album) {
   document.getElementById("album-title").textContent = albumTitle;
   document.getElementById("album-year").textContent = `Year: ${releaseYear}`;
   document.getElementById("album-artwork").src = imageURL;
-
-  // Check if the values are being updated in the DOM
-  console.log("Album info updated in DOM:", albumTitle, releaseYear, imageURL);
 }
 
 function renderTracks(songs) {
