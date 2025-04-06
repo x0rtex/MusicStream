@@ -1,4 +1,4 @@
-const apiEndpoint = "https://0lb1o3drhc.execute-api.us-east-1.amazonaws.com/dev";
+const apiEndpoint = "https://api.musicstreamcc.xyz/";
 const placeholderImg = "https://placehold.co/600x600?text=No+Image";
 
 function formatDuration(seconds) {
