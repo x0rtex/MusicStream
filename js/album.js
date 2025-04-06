@@ -59,11 +59,14 @@ function renderTracks(songs) {
   container.innerHTML = songs
     .map(
       (song, index) => `
-      <div class="list-group-item">
+      <div class="song-list-item list-group-item">
           <div class="d-flex justify-content-between align-items-center">
-              <div>
-                  <h5 class="mb-1">${index + 1}. ${song.Title || "Untitled Track"}</h5>
-                  <small class="text-muted">${formatDuration(song.Duration)}</small>
+              <div class="d-flex align-items-center">
+                  <img src="${getSongImageUrl(song.SongID)}" alt="Song Image" class="song-image me-3">
+                  <div>
+                      <h5 class="mb-1">${index + 1}. ${song.Title || "Untitled Track"}</h5>
+                      <small class="text-muted">${formatDuration(song.Duration)}</small>
+                  </div>
               </div>
               <button class="btn btn-sm btn-primary" onclick="playTrack('${getSongAudioUrl(song.SongID)}')">
                 Play
