@@ -40,6 +40,6 @@ function fetchDisplayFeaturedAlbum() {
             document.getElementById("featured-album-link")
                 .href = `album.html?AlbumID=${album.AlbumID}&ArtistID=${album.ArtistID}`;
             document.querySelector(".featured-album-img")
-                .src = album.ImageURL || placeholderImg;
+                .src = getArtistImageUrl(artist.ArtistID) || placeholderImg;
         });
 }
