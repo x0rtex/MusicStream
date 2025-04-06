@@ -3,17 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Artist</title>
+    <title>MusicStream - Artist</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="style/style.css" />
+    <link rel="stylesheet" href="css/styles.css" />
   </head>
   <body>
-    <header>
-      <!-- Navigation Bar -->
-      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <!-- Navigation (same on all pages) -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
         <a class="navbar-brand" href="index.html">MusicStream</a>
         <div class="collapse navbar-collapse">
           <ul class="navbar-nav ms-auto">
@@ -28,70 +28,34 @@
             </li>
           </ul>
         </div>
-      </nav>
-    </header>
+      </div>
+    </nav>
 
-    <div class="container mt-5">
-      <!-- Artist name and albums list -->
-      <h1 id="artist-name"></h1>
+    <!-- Main content for artist page -->
+    <main class="container my-5">
+      <div class="artist-header text-center mb-5">
+        <!-- Artist header: Artist image and name -->
+        <img
+          id="artist-image"
+          src=""
+          alt="Artist Image"
+          class="img-fluid rounded-circle mb-3"
+          style="width: 200px; height: 200px"
+        />
+        <h1 id="artist-name" class="display-4"></h1>
+      </div>
 
-      <!-- This div will hold the list of albums for the artist -->
-      <div id="albums-list" class="row"></div>
-    </div>
-
-    <script>
-      // Define the API endpoint and a placeholder image URL
-      const apiEndpoint =
-        "https://0lb1o3drhc.execute-api.us-east-1.amazonaws.com/dev";
-      const placeholderImg = "https://placehold.co/400x400";
-
-      // Get the artist ID from URL query parameters
-      const params = new URLSearchParams(window.location.search);
-      const artistId = params.get("id");
-
-      if (!artistId) {
-        document.body.innerHTML = "<h1>Artist ID is missing in the URL</h1>";
-      } else {
-        // Fetch albums for the artist by passing ArtistID as a query parameter
-        fetch(`${apiEndpoint}/albums?ArtistID=${artistId}`)
-          .then((response) => response.json())
-          .then((albums) => {
-            // Check if albums were returned
-            if (!albums || albums.length === 0) {
-              document.getElementById("albums-list").innerHTML =
-                "<p>No albums found for this artist.</p>";
-              return;
-            }
-            // Dynamically generate the album list for this artist
-            document.getElementById("albums-list").innerHTML = albums
-              .map(
-                (album) => `
-            <div class="col-md-4">
-              <div class="card">
-                <!-- Display album image -->
-                <img src="${
-                  album.ImageURL || placeholderImg
-                }" class="card-img-top" alt="${album.Title}">
-                <div class="card-body">
-                  <!-- Album title with link to album detail page -->
-                  <h5 class="card-title">
-                    <a href="album.html?AlbumID=${album.AlbumID}&ArtistID=${album.ArtistID}">${album.Title}</a>
-                  </h5>
-                </div>
-              </div>
-            </div>
-          `
-              )
-              .join("");
-          })
-          .catch((error) => {
-            console.error("Error fetching albums:", error);
-            document.getElementById("albums-list").innerHTML =
-              "<p>Error loading albums.</p>";
-          });
-      }
-    </script>
+      <!-- Albums Section -->
+      <section>
+        <h2 class="mb-4">Albums by this Artist</h2>
+        <div id="albums" class="row g-4"></div>
+      </section>
+    </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Common functions used on all pages -->
+    <script src="js/common.js"></script>
+    <!-- Artist-specific JavaScript -->
+    <script src="js/artist.js"></script>
   </body>
 </html>

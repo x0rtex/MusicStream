@@ -1,82 +1,74 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>MusicStream - Home</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  <link rel="stylesheet" href="style/style.css">
-</head>
-<body>
-  <header>
-    <!-- Navigation Bar -->
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MusicStream - Home</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <!-- Navigation (same on all pages) -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <a class="navbar-brand" href="index.html">MusicStream</a>
-      <div class="collapse navbar-collapse">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="index.html">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="profile.html">Profile</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="checkout.html">Checkout</a>
-          </li>
-        </ul>
-      </div>
-    </nav>
-  </header>
-
-  <!-- Home message -->
-  <div class="container">
-    <h1>Welcome, User</h1>
-    <p>View some of our featured artists and albums.</p>
-  </div>
-
-  <hr class="my-4">
-
-  <!-- Artists -->
-  <div class="container">
-    <section id="artists">
-      <!-- Artist cards will be dynamically added here -->
-    </section>
-  </div>
-
-  <hr class="my-4">
-
-  <div class="container">
-    <h2>Featured Album</h2>
-    <p>Here's an album we have selected for you to try.</p>
-  </div>
-
-  <!-- Featured Album -->
-  <div id="featured-album" class="container my-4">
-    <div class="card">
-      <div class="d-flex">
-        <img class="featured-album-img" src="https://placehold.co/400x400" alt="Artist 3" width="150" height="150">
-        <div class="card-body">
-          <h5 class="card-title">Featured Album</h5>
-          <a href="#" class="btn btn-primary">Listen Now</a>
+      <div class="container">
+        <a class="navbar-brand" href="index.html">MusicStream</a>
+        <div class="collapse navbar-collapse">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="profile.html">Profile</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="checkout.html">Checkout</a>
+            </li>
+          </ul>
         </div>
       </div>
-    </div>
-  </div>
+    </nav>
 
-  <hr class="my-4">
+    <main class="container my-5">
+      <div class="text-center mb-5">
+        <h1 class="display-4">Welcome to MusicStream</h1>
+        <p class="lead">Discover new music and enjoy your favorite artists</p>
+      </div>
 
-  <!-- Music Player UI across pages -->
-  <footer>
-    <div id="music-player" class="player fixed-bottom bg-dark text-white p-3">
-      <audio controls>
-        <source src="sample.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-      </audio>
-    </div>
-  </footer>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-<script src="js/script.js"></script>
-</body>
+      <!-- Artists Section -->
+      <section class="mb-5">
+        <h2 class="mb-4">Featured Artists</h2>
+        <div id="artists" class="row g-4"></div>
+      </section>
+
+      <!-- Featured Album -->
+      <section class="mb-5">
+        <h2 class="mb-4">Album of the Day</h2>
+        <div id="featured-album" class="card border-0 shadow">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <img
+                class="featured-album-img img-fluid rounded-start"
+                alt="Featured album"
+              />
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h3 class="card-title" id="featured-album-title"></h3>
+                <a id="featured-album-link" class="btn btn-primary btn-lg mt-3"
+                  >Listen Now</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/home.js"></script>
+  </body>
 </html>
