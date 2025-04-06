@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log("Album data received:", albums); // Log the album array
       // Use the first album in the array if multiple are returned
       updateAlbumInfo(albums[0]);
+      document.title = albums[0].Title || "MusicStream";
     })
     .catch(handleError);
 

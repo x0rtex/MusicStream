@@ -18,9 +18,11 @@ document.addEventListener("DOMContentLoaded", () => {
       const artist = artists.find((a) => a.ArtistID === artistID);
       if (artist) {
         // Update the artist header with the artist's name and image
-        document.getElementById("artist-name").textContent = artist.Name;
+          const artistName = artist.Name;
+        document.getElementById("artist-name").textContent = artistName;
         document.getElementById("artist-image").src =
           getArtistImageUrl(artist.ArtistID) || placeholderImg;
+        document.title = artistName || "MusicStream";
       } else {
         document.getElementById("artist-name").textContent = "Artist not found";
       }
