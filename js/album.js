@@ -1,70 +1,81 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const params = new URLSearchParams(window.location.search);
-    const albumId = params.get("AlbumID");
-    const artistId = params.get("ArtistID");
+    const albumId = getAlbumId();
+    if (!albumId) return;
 
-    if (!albumId || !artistId) {
-        showError("Missing album or artist information.");
-        return;
-    }
-
-    // Fetch album details
-    fetch(`${apiEndpoint}/albums?AlbumID=${albumId}&ArtistID=${artistId}`)
-        .then(handleResponse)
-        .then((albums) => {
-            updateAlbumInfo(albums[0]);
-            document.title = albums[0].Title || "MusicStream";
+    Promise.all([fetchAlbumDetails(albumId), fetchSongs(albumId)])
+        .then(() => {
         })
         .catch(handleError);
+});
 
-    // Fetch songs
-    fetch(`${apiEndpoint}/songs?AlbumID=${albumId}`)
+function getAlbumId() {
+    const params = new URLSearchParams(window.location.search);
+    const albumId = parseInt(params.get("AlbumID"), 10);
+
+    if (isNaN(albumId)) {
+        showError("Missing or invalid AlbumID.");
+        return null;
+    }
+
+    return albumId;
+}
+
+function fetchAlbumDetails(albumId) {
+    return fetch(`${apiEndpoint}/album?AlbumID=${albumId}`)
         .then(handleResponse)
-        .then((data) => {
-            const playlist = data.Songs.map((song) => getSongAudioUrl(song.SongID));
-            renderTracks(data.Songs, playlist);
+        .then((album) => {
+            updateAlbumInfo(album);
+            document.title = album.Title || "MusicStream";
+        })
+        .catch(handleError);
+}
+
+function fetchSongs(albumId) {
+    return fetch(`${apiEndpoint}/songs?AlbumID=${albumId}`)
+        .then(handleResponse)
+        .then((songs) => {
+            const playlist = songs.map((song) => getSongAudioUrl(song.SongID));
+            renderTracks(songs, playlist);
 
             document.getElementById("play-album-button").addEventListener("click", () => {
                 playTrack(playlist, 0);
             });
         })
         .catch(handleError);
-});
+}
 
-function updateAlbumInfo(album) {
+function fetchArtistDetails(artistID) {
+    return fetch(`${apiEndpoint}/artists?ArtistID=${artistID}`)
+        .then((response) => response.json())
+        .then((artists) => {
+            const artist = artists.find((a) => a.ArtistID === artistID);
+            const artistName = artist.Name || "Unknown Artist";
+            const artistImageUrl = getArtistImageUrl(artist.ArtistID) || placeholderImg;
+            document.getElementById("artist-name").textContent = `By ${artistName || "Unknown Artist"}`;
+            document.getElementById("artist-image").src = artistImageUrl;
+        })
+        .catch((error) => {
+            console.error("Error fetching artist data:", error);
+            document.getElementById("artist-name").textContent = "By Unknown Artist";
+        });
+}
+
+async function updateAlbumInfo(album) {
     if (!album || typeof album !== "object") {
         showError("Album data is malformed or missing.");
         return;
     }
 
-    // Get album details or use "Unknown" values if missing
     const albumTitle = album.Title || "Unknown Album Title";
     const releaseYear = album.ReleaseYear || "Unknown Release Year";
     const imageURL = getAlbumImageUrl(album.AlbumID) || "https://placehold.co/600x600?text=No+Image";
     const artistID = album.ArtistID;
 
-    // Update DOM with the album details (excluding artist name and genre)
     document.getElementById("album-title").textContent = albumTitle;
     document.getElementById("album-year").textContent = `Year: ${releaseYear}`;
     document.getElementById("album-artwork").src = imageURL;
-
-    fetch(`${apiEndpoint}/artists?ArtistID=${artistID}`)
-        .then((response) => response.json())
-        .then((artists) => {
-            const artist = artists.find((a) => a.ArtistID === artistID);
-            if (artist) {
-                const artistName = artist.Name;
-                const artistImageUrl = getArtistImageUrl(artist.ArtistID) || placeholderImg;
-
-                // Update DOM with the album details (including artist name and image)
-                document.getElementById("album-title").textContent = albumTitle;
-                document.getElementById("album-year").textContent = `Year: ${releaseYear}`;
-                document.getElementById("album-artwork").src = imageURL;
-                document.getElementById("artist-name").textContent = `By ${artistName}`;
-                document.getElementById("artist-image").src = artistImageUrl;
-            }
-        })
-        .catch((error) => console.error("Error fetching artist data:", error));
+    
+    await fetchArtistDetails(artistID);
 }
 
 function renderTracks(songs, playlist) {
@@ -96,30 +107,31 @@ function renderTracks(songs, playlist) {
     });
 }
 
+function formatDuration(seconds) {
+    if (!seconds) return "0:00";
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
+}
+
 function playTrack(playlist, songIndex) {
     const player = document.getElementById("music-player");
     if (player) {
-        // Remove playing class from all song list items
-        const songListItems = document.querySelectorAll(".song-list-item");
-        songListItems.forEach((item) => item.classList.remove("playing"));
-
-        // Add playing class to the current song list item
-        const currentSongListItem = songListItems[songIndex];
-        if (currentSongListItem) {
-            currentSongListItem.classList.add("playing");
-        }
+        document.querySelectorAll(".song-list-item").forEach((item) => item.classList.remove("playing"));
+        const currentItem = document.querySelector(`.song-list-item[data-index="${songIndex}"]`);
+        if (currentItem) currentItem.classList.add("playing");
 
         player.src = playlist[songIndex];
         player.play();
+
         player.addEventListener("ended", function () {
-            // Play the next track in the playlist
-            const nextTrackIndex = songIndex + 1;
-            if (nextTrackIndex < playlist.length) {
-                playTrack(playlist, nextTrackIndex);
+            const next = songIndex + 1;
+            if (next < playlist.length) {
+                playTrack(playlist, next);
             } else {
-                playTrack(playlist, 0);
+                playTrack(playlist, 0); // loop
             }
-        });
+        }, {once: true});
     }
 }
 
@@ -142,9 +154,3 @@ function showError(message) {
   `;
 }
 
-function formatDuration(seconds) {
-    if (!seconds) return "0:00";
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, "0")}`;
-}

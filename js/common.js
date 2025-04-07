@@ -1,12 +1,34 @@
+document.addEventListener("DOMContentLoaded", () => {
+    createNavbar();
+    initializePlayer();
+});
+
 const websiteUrl = "https://musicstreamcc.xyz";
 const apiEndpoint = "https://api.musicstreamcc.xyz/";
 const placeholderImg = "https://placehold.co/600x600?text=No+Image";
 
-function formatDuration(seconds) {
-    if (!seconds) return "0:00";
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, "0")}`;
+function createNavbar() {
+    const navContainer = document.getElementById('nav-container');
+    navContainer.innerHTML = `
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+          <a class="navbar-brand" href="index.html">MusicStream</a>
+          <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="index.html">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="profile.html">Profile</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="checkout.html">Checkout</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      `;
 }
 
 function initializePlayer() {
@@ -39,8 +61,3 @@ function getSongImageUrl(songId) {
 function getSongAudioUrl(songId) {
     return `${websiteUrl}/media/audio/songs/${songId}.mp3`;
 }
-
-// Add audio player to every page
-document.addEventListener("DOMContentLoaded", () => {
-    initializePlayer();
-});

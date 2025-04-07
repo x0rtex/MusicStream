@@ -32,7 +32,7 @@ function fetchDisplayArtists() {
 }
 
 function fetchDisplayFeaturedAlbum() {
-    fetch(`${apiEndpoint}/random-album`)
+    fetch(`${apiEndpoint}/album`)
         .then((response) => response.json())
         .then((album) => {
             document.getElementById("featured-album-title")

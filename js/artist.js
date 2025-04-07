@@ -1,70 +1,64 @@
 // Wait for the DOM to fully load
 document.addEventListener("DOMContentLoaded", () => {
-    // Get the ArtistID from the URL query parameters (either 'ArtistID' or 'id')
     const params = new URLSearchParams(window.location.search);
-    const artistID = params.get("ArtistID") || params.get("id");
+    const artistIDStr = params.get("ArtistID") || params.get("id");
 
-    // If ArtistID is missing, show an error message
-    if (!artistID) {
+    if (!artistIDStr) {
         document.body.innerHTML = "<h1>Error: Missing ArtistID in URL</h1>";
         return;
     }
 
-    // Fetch artist data by getting all artists and filtering by ArtistID
-    fetch(`${apiEndpoint}/artists`)
-        .then((response) => response.json())
-        .then((artists) => {
-            // Find the artist with the matching ArtistID
-            const artist = artists.find((a) => a.ArtistID === artistID);
-            if (artist) {
-                // Update the artist header with the artist's name and image
-                const artistName = artist.Name;
-                document.getElementById("artist-name").textContent = artistName;
-                document.getElementById("artist-image").src =
-                    getArtistImageUrl(artist.ArtistID) || placeholderImg;
-                document.title = artistName || "MusicStream";
-            } else {
-                document.getElementById("artist-name").textContent = "Artist not found";
-            }
-        })
-        .catch((error) => console.error("Error fetching artist data:", error));
+    const ArtistID = parseInt(artistIDStr, 10);
+    if (isNaN(ArtistID)) {
+        document.body.innerHTML = "<h1>Error: Invalid ArtistID</h1>";
+        return;
+    }
 
-    // Fetch albums for the given artist using the ArtistID query parameter
-    fetch(`${apiEndpoint}/albums?ArtistID=${artistID}`)
+    fetch(`${apiEndpoint}/artist?ArtistID=${ArtistID}`)
+        .then((response) => {
+            if (!response.ok) throw new Error("Artist not found");
+            return response.json();
+        })
+        .then((artist) => {
+            const artistName = artist.Name;
+            document.getElementById("artist-name").textContent = artistName;
+            document.getElementById("artist-image").src =
+                getArtistImageUrl(ArtistID) || placeholderImg;
+            document.title = artistName || "MusicStream";
+        })
+        .catch((error) => {
+            console.error("Error fetching artist data:", error);
+            document.getElementById("artist-name").textContent = "Artist not found";
+        });
+
+    fetch(`${apiEndpoint}/albums?ArtistID=${ArtistID}`)
         .then((response) => response.json())
         .then((albums) => {
             const albumsContainer = document.getElementById("albums");
 
-            // If no albums are found, display a message
             if (!albums || albums.length === 0) {
                 albumsContainer.innerHTML = "<p>No albums found for this artist.</p>";
                 return;
             }
 
-            // Populate the albums section with album cards
             albumsContainer.innerHTML = albums
                 .map(
                     (album) => `
         <div class="col-md-4">
           <div class="album-card card h-100">
-            <img src="${
-                        getAlbumImageUrl(album.AlbumID) || placeholderImg
-                    }" class="card-img-top" alt="${album.Title}">
+            <img src="${getAlbumImageUrl(album.AlbumID) || placeholderImg}" class="card-img-top" alt="${album.Title}">
             <div class="card-body text-center">
               <h5 class="card-title">
-                <a href="album.html?AlbumID=${album.AlbumID}&ArtistID=${album.ArtistID}" 
+                <a href="album.html?AlbumID=${album.AlbumID}" 
                    class="stretched-link text-decoration-none">
                   ${album.Title}
                 </a>
               </h5>
-              <p class="text-muted">Released: ${
-                        album.ReleaseYear || "Unknown"
-                    }</p>
+              <p class="text-muted">Released: ${album.ReleaseYear || "Unknown"}</p>
             </div>
           </div>
         </div>
-      `
-                )
+      `)
                 .join("");
         })
         .catch((error) =>
