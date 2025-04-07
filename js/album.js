@@ -20,7 +20,14 @@ document.addEventListener("DOMContentLoaded", () => {
     // Fetch songs
     fetch(`${apiEndpoint}/songs?AlbumID=${albumId}`)
         .then(handleResponse)
-        .then((data) => renderTracks(data.Songs || []))
+        .then((data) => {
+            const playlist = data.Songs.map((song) => getSongAudioUrl(song.SongID));
+            renderTracks(data.Songs, playlist);
+
+            document.getElementById("play-album-button").addEventListener("click", () => {
+                playTrack(playlist, 0);
+            });
+        })
         .catch(handleError);
 });
 
@@ -34,14 +41,33 @@ function updateAlbumInfo(album) {
     const albumTitle = album.Title || "Unknown Album Title";
     const releaseYear = album.ReleaseYear || "Unknown Release Year";
     const imageURL = getAlbumImageUrl(album.AlbumID) || "https://placehold.co/600x600?text=No+Image";
+    const artistID = album.ArtistID;
 
     // Update DOM with the album details (excluding artist name and genre)
     document.getElementById("album-title").textContent = albumTitle;
     document.getElementById("album-year").textContent = `Year: ${releaseYear}`;
     document.getElementById("album-artwork").src = imageURL;
+
+    fetch(`${apiEndpoint}/artists?ArtistID=${artistID}`)
+        .then((response) => response.json())
+        .then((artists) => {
+            const artist = artists.find((a) => a.ArtistID === artistID);
+            if (artist) {
+                const artistName = artist.Name;
+                const artistImageUrl = getArtistImageUrl(artist.ArtistID) || placeholderImg;
+
+                // Update DOM with the album details (including artist name and image)
+                document.getElementById("album-title").textContent = albumTitle;
+                document.getElementById("album-year").textContent = `Year: ${releaseYear}`;
+                document.getElementById("album-artwork").src = imageURL;
+                document.getElementById("artist-name").textContent = `By ${artistName}`;
+                document.getElementById("artist-image").src = artistImageUrl;
+            }
+        })
+        .catch((error) => console.error("Error fetching artist data:", error));
 }
 
-function renderTracks(songs) {
+function renderTracks(songs, playlist) {
     const container = document.getElementById("songs-list");
 
     if (!songs.length) {
@@ -49,10 +75,8 @@ function renderTracks(songs) {
         return;
     }
 
-    container.innerHTML = songs
-        .map(
-            (song, index) => `
-      <div class="song-list-item list-group-item">
+    container.innerHTML = songs.map((song, index) => `
+      <div class="song-list-item list-group-item" data-index="${index}">
           <div class="d-flex justify-content-between align-items-center">
               <div class="d-flex align-items-center">
                   <img src="${getSongImageUrl(song.SongID)}" alt="Song Image" class="song-image me-3">
@@ -61,21 +85,41 @@ function renderTracks(songs) {
                       <small class="text-muted">${formatDuration(song.Duration)}</small>
                   </div>
               </div>
-              <button class="btn btn-sm btn-primary" onclick="playTrack('${getSongAudioUrl(song.SongID)}')">
-                Play
-              </button>
+              <button class="btn btn-sm btn-primary play-button">▶</button>
           </div>
       </div>
-  `
-        )
-        .join("");
+  `).join("");
+
+    const playButtons = container.querySelectorAll('.play-button');
+    playButtons.forEach((button, index) => {
+        button.addEventListener('click', () => playTrack(playlist, index));
+    });
 }
 
-function playTrack(url) {
-    const player = document.getElementById("player");
+function playTrack(playlist, songIndex) {
+    const player = document.getElementById("music-player");
     if (player) {
-        player.src = url;
+        // Remove playing class from all song list items
+        const songListItems = document.querySelectorAll(".song-list-item");
+        songListItems.forEach((item) => item.classList.remove("playing"));
+
+        // Add playing class to the current song list item
+        const currentSongListItem = songListItems[songIndex];
+        if (currentSongListItem) {
+            currentSongListItem.classList.add("playing");
+        }
+
+        player.src = playlist[songIndex];
         player.play();
+        player.addEventListener("ended", function () {
+            // Play the next track in the playlist
+            const nextTrackIndex = songIndex + 1;
+            if (nextTrackIndex < playlist.length) {
+                playTrack(playlist, nextTrackIndex);
+            } else {
+                playTrack(playlist, 0);
+            }
+        });
     }
 }
 
