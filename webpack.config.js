@@ -80,8 +80,7 @@ module.exports = {
         }),
         new Dotenv({
             systemvars: true,
-            safe: true,
-            expand: true
+            silent: true
         }),
     ],
     optimization: {
