@@ -57,6 +57,8 @@ npm run build
     - AWS_S3_BUCKET
     - AWS_REGION
     - CLOUDFRONT_DISTRIBUTION_ID
+    - WEBSITE_URL
+    - API_ENDPOINT
 2. Push to master branch to trigger automatic deployment:
 
 ```bash
