@@ -22,6 +22,9 @@ jobs:
 
       - name: Build with Webpack
         run: npm run build
+        env:
+          API_ENDPOINT: ${{ secrets.API_ENDPOINT }}
+          WEBSITE_URL: ${{ secrets.WEBSITE_URL }}
 
       - name: Deploy to S3
         uses: jakejarvis/s3-sync-action@master
