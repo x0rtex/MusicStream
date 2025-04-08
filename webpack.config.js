@@ -12,6 +12,7 @@ module.exports = {
         artist: './src/js/artist.js',
         album: './src/js/album.js',
         profile: './src/js/profile.js',
+        checkout: './src/js/checkout.js',
     },
     output: {
         filename: '[name].bundle.js',
@@ -56,6 +57,11 @@ module.exports = {
             template: './src/html/profile.html',
             filename: 'profile.html',
             chunks: ['profile', 'common'],
+        }),
+        new HtmlWebpackPlugin({
+            template: './src/html/checkout.html',
+            filename: 'checkout.html',
+            chunks: ['checkout', 'common'],
         }),
         new CopyPlugin({
             patterns: [
