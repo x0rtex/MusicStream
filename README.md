@@ -94,7 +94,7 @@ MusicStreamCC/
 ## Technologies Used 🔧
 
 - Frontend: Webpack, Bootstrap 5
-- Build Tools: Babel, PostCSS
+- Build Tools: Babel
 - Cloud: AWS S3, CloudFront
 - CI/CD: GitHub Actions
 - Utilities: dotenv-webpack, html-webpack-plugin
