@@ -11,8 +11,9 @@ export const placeholderImg = "https://placehold.co/600x600?text=No+Image";
 
 function createNavbar() {
     const navContainer = document.getElementById('nav-container');
+    <!-- Relative URLs are intentional and will be resolved correctly in the rendered HTML -->
+    // noinspection HtmlUnknownTarget
     navContainer.innerHTML = `
-      <!-- Relative URLs are intentional and will be resolved correctly in the rendered HTML -->
       <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
           <a class="navbar-brand" href="index.html">MusicStream</a>
