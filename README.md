@@ -1,6 +1,6 @@
 # MusicStreamCC
 
-[![Build Status](https://github.com/x0rtex/MusicStream/actions/workflows/deploy.yml/badge.svg)](https://github.com/x0rtex/MusicStream/actions)
+[![Build Status](https://github.com/x0rtex/MusicStream/actions/workflows/deploy.yml/badge.svg?event=push&label=Build)](https://github.com/x0rtex/MusicStream/actions)
 [![npm](https://img.shields.io/npm/v/webpack)](https://www.npmjs.com/package/webpack)
 
 ## Features ✨
