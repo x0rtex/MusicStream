@@ -31,15 +31,11 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Deploy to S3
-        uses: jakejarvis/s3-sync-action@v0.7.0
+        uses: jakejarvis/s3-sync-action@master
         with:
-          source: './dist'
-          destination: 's3://${{ secrets.AWS_S3_BUCKET }}'
-          delete: true
-          follow-symlinks: true
-          acl: 'public-read'
-          # Optional: Add CloudFront invalidation
-          # cloudfront-id: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
+          args: --follow-symlinks --exclude '.git*/*'
         env:
           AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          SOURCE_DIR: 'dist'
