@@ -26,6 +26,11 @@ jobs:
           API_ENDPOINT: ${{ secrets.API_ENDPOINT }}
           WEBSITE_URL: ${{ secrets.WEBSITE_URL }}
 
+      - name: Verify API Endpoint
+        run: |
+          grep -q "https://api.musicstreamcc.xyz" dist/*.bundle.js
+          echo "API endpoint verified in build output."
+
       - name: Deploy to S3
         uses: jakejarvis/s3-sync-action@master
         with:
