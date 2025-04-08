@@ -1,0 +1,167 @@
+﻿/* Base styles */
+body {
+    font-family: "Arial", sans-serif;
+    padding-bottom: 80px; /* To prevent footer overlap */
+    background-color: #f8f9fa;
+}
+
+/* Navigation */
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+/* Artist cards */
+.artist-card {
+    transition: transform 0.2s;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.artist-card:hover {
+    transform: translateY(-5px);
+}
+
+.artist-card img {
+    height: 200px;
+    object-fit: cover;
+    width: 100%;
+    border-radius: 8px;
+}
+
+/* Album cards (same hover effect as artist cards) */
+.album-card {
+    transition: transform 0.2s;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.album-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Album page */
+.album-artwork {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    width: 100%;
+    height: auto;
+}
+
+#artist-image {
+    width: 50px;
+    height: 50px
+}
+
+/* Song list items */
+.song-list-item {
+    transition: background-color 0.2s;
+    border: none;
+    border-left: 4px solid transparent;
+}
+
+.play-button {
+    width: 100px;
+}
+
+.song-list-item.playing {
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
+
+.song-list-item:hover {
+    background-color: #f8f9fa;
+    border-left-color: #0d6efd;
+}
+
+.song-list-item.playing:hover {
+    background-color: #dbecd4;
+    border-left-color: #0d6efd;
+}
+
+.song-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Music player */
+#music-player-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+#music-player {
+    width: 100%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    margin-top: 5px;
+}
+
+/* Checkout form */
+.checkout-form {
+    max-width: 500px;
+    margin: 0 auto;
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.checkout-form .form-label {
+    font-weight: bold;
+    color: #333;
+}
+
+.checkout-form input {
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    padding: 12px;
+    font-size: 16px;
+    margin-bottom: 1.5rem;
+}
+
+.checkout-form button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    font-size: 18px;
+    padding: 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.checkout-form button:hover {
+    background-color: #0056b3;
+}
+
+.checkout-form button:active {
+    background-color: #003f8f;
+}
+
+/* Profile page */
+.profile-container {
+    max-width: 500px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.profile-card {
+    background-color: #fff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.profile-card img {
+    border: 5px solid #ddd;
+    margin-bottom: 15px;
+}
+
+.profile-card p {
+    font-size: 18px;
+}
