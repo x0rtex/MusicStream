@@ -35,12 +35,7 @@ cp .env.example .env
 
 ## Configuration ⚙️
 
-Edit `.env` file:
-
-```env
-WEBSITE_URL=
-API_ENDPOINT=
-```
+- Edit `.env` file (see .env.example)
 
 ## Production Build 📦
 
