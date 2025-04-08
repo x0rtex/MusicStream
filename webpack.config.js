@@ -78,7 +78,11 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: '[name].[contenthash].css',
         }),
-        new Dotenv(),
+        new Dotenv({
+            systemvars: true,
+            safe: true,
+            expand: true
+        }),
     ],
     optimization: {
         splitChunks: {
