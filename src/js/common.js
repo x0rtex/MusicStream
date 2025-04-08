@@ -6,6 +6,9 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 const websiteUrl = process.env.WEBSITE_URL;
+const loginUrl = process.env.LOGIN_URL;
+const registerURL = process.env.REGISTER_URL;
+const logoutURL = process.env.LOGOUT_URL;
 export const apiEndpoint = process.env.API_ENDPOINT;
 export const placeholderImg = "https://placehold.co/600x600?text=No+Image";
 
@@ -27,6 +30,15 @@ function createNavbar() {
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="checkout.html">Checkout</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href=${registerURL}>Register</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href=${loginUrl}>Login</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href=${logoutURL}>Logout</a>
               </li>
             </ul>
           </div>
