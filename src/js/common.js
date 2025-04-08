@@ -5,8 +5,8 @@ document.addEventListener("DOMContentLoaded", () => {
     initializePlayer();
 });
 
-const websiteUrl = "https://musicstreamcc.xyz";
-export const apiEndpoint = "https://api.musicstreamcc.xyz/";
+const websiteUrl = process.env.WEBSITE_URL;
+export const apiEndpoint = process.env.API_ENDPOINT;
 export const placeholderImg = "https://placehold.co/600x600?text=No+Image";
 
 function createNavbar() {
