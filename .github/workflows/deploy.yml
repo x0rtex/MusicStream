@@ -29,6 +29,9 @@ jobs:
         env:
           API_ENDPOINT: ${{ secrets.API_ENDPOINT }}
           WEBSITE_URL: ${{ secrets.WEBSITE_URL }}
+          LOGIN_URL: ${{ secrets.LOGIN_URL }}
+          REGISTER_URL: ${{ secrets.REGISTER_URL }}
+          LOGOUT_URL: ${{ secrets.LOGOUT_URL }}
 
       - name: Verify API Endpoint
         run: |
