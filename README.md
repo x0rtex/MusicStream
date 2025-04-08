@@ -54,6 +54,9 @@ npm run build
     - CLOUDFRONT_DISTRIBUTION_ID
     - WEBSITE_URL
     - API_ENDPOINT
+    - LOGIN_URL
+    - REGISTER_URL
+    - LOGOUT_URL
 2. Push to master branch to trigger automatic deployment:
 
 ```bash
