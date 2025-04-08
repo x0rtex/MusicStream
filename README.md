@@ -67,17 +67,26 @@ git push origin master
 
 ```
 MusicStreamCC/
-├── dist/                 # Production build (auto-generated)
+├── .github/
+│   └── workflows/       # CI/CD pipelines
+├── dist/                # Production build (auto-generated)
 ├── src/
-│   ├── html/             # HTML templates
-│   ├── js/               # JavaScript modules
-│   │   ├── home.js       # Main landing page
-│   │   ├── artist.js     # Artist details
-│   │   └── album.js      # Album tracks
-│   ├── css/              # Stylesheets
-│   └── media/            # Local media assets
-├── webpack.config.js     # Build configuration
-└── .github/workflows/    # CI/CD pipelines
+│   ├── html/            # HTML templates
+│   ├── js/              # JavaScript modules
+│   │   ├── home.js      # Main landing page
+│   │   ├── artist.js    # Artist details
+│   │   └── album.js     # Album tracks
+│   ├── css/             # Stylesheets
+│   │   └── styles.css
+│   ├── media/           # Local media assets
+│   │   ├── audio/
+│   │   │   └── songs/   # Songs in .mp3
+│   │   └── images/
+│   │       ├── artists/ # Artist images as .webp
+│   │       ├── albums/  # Album covers as .webp
+│   │       └── songs/   # Song covers as .webp
+├── webpack.config.js    # Build configuration
+└── babel.config.js      # Babel configuration
 ```
 
 ## Technologies Used 🔧
