@@ -11,10 +11,7 @@ module.exports = {
         home: './src/js/home.js',
         artist: './src/js/artist.js',
         album: './src/js/album.js',
-        login: './src/js/login.js',
         profile: './src/js/profile.js',
-        logout: './src/js/logout.js',
-        register: './src/js/register.js'
     },
     output: {
         filename: '[name].bundle.js',
@@ -59,16 +56,6 @@ module.exports = {
             template: './src/html/profile.html',
             filename: 'profile.html',
             chunks: ['profile', 'common'],
-        }),
-        new HtmlWebpackPlugin({
-            template: './src/html/login.html',
-            filename: 'login.html',
-            chunks: ['login', 'common'],
-        }),
-        new HtmlWebpackPlugin({
-            template: './src/html/register.html',
-            filename: 'register.html',
-            chunks: ['register', 'common'],
         }),
         new CopyPlugin({
             patterns: [
