@@ -11,7 +11,6 @@
 - 📱 Responsive design with Bootstrap
 - 🚀 AWS S3 + CloudFront deployment
 - 🔄 GitHub Actions CI/CD pipeline
-- 🎨 CSS processing with PostCSS
 - 📦 Webpack optimization (code splitting, cache busting)
 
 ## Installation 💻
