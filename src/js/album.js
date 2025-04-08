@@ -163,4 +163,3 @@ function showError(message) {
       </div>
   `;
 }
-
