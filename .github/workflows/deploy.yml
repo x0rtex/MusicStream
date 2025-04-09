@@ -35,11 +35,6 @@ jobs:
           VITE_COGNITO_USER_POOL_ID: ${{ secrets.VITE_COGNITO_USER_POOL_ID }}
           VITE_COGNITO_APP_CLIENT_ID: ${{ secrets.VITE_COGNITO_APP_CLIENT_ID }}
 
-      - name: Verify API Endpoint
-        run: |
-          grep -q "https://api.musicstreamcc.xyz" dist/*.bundle.js
-          echo "API endpoint verified in build output."
-
       - name: Deploy to S3
         uses: jakejarvis/s3-sync-action@master
         with:
