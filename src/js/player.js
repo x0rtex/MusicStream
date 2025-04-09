@@ -1,90 +1,89 @@
-﻿// Initialize the music player if not created
-import {getSongAudioUrl} from "./common";
+﻿import {getSongAudioUrl} from "./common";
 
 export function initializePlayer() {
-    CreatePlayerElement();
-    SetPlayerFromLocalStorage();
+    createPlayerElement();
+    setPlayerFromLocalStorage();
 }
 
 export function playTrack(songs, songIndex) {
-    const player = GetPlayerElement();
-    if (player) {
-        document.querySelectorAll(".song-list-item").forEach((item) => item.classList.remove("playing"));
-        const currentItem = document.querySelector(`.song-list-item[data-index="${songIndex}"]`);
-        if (currentItem) currentItem.classList.add("playing");
+    const player = getPlayerElement();
+    if (!player) return;
 
-        const songTitle = songs[songIndex].Title || "Untitled Track";
-        SetPlayingTitle(songTitle);
+    document.querySelectorAll(".song-list-item").forEach(item => item.classList.remove("playing"));
+    const currentItem = document.querySelector(`.song-list-item[data-index="${songIndex}"]`);
+    currentItem?.classList.add("playing");
 
-        const audioUrl = getSongAudioUrl(songs[songIndex].SongID);
-        PlaySong(audioUrl);
+    const songTitle = songs[songIndex].Title || "Untitled Track";
+    setPlayingTitle(songTitle);
 
-        // Save the current song and its progress to local storage
-        localStorage.setItem('songTitle', songTitle);
-        localStorage.setItem('currentSong', audioUrl);
-        player.addEventListener("timeupdate", function () {
-            localStorage.setItem('songProgress', player.currentTime);
-        });
+    const audioUrl = getSongAudioUrl(songs[songIndex].SongID);
+    playSong(audioUrl);
 
-        PlayNextSong(songs, songIndex);
-    }
+    // Save current song and title
+    localStorage.setItem('currentSong', audioUrl);
+    localStorage.setItem('songTitle', songTitle);
+
+    setupNextSong(songs, songIndex);
 }
 
-function GetPlayerElement() {
+function getPlayerElement() {
     return document.getElementById("music-player");
 }
 
-function PlaySong(audioUrl) {
-    const player = GetPlayerElement();
+function playSong(audioUrl) {
+    const player = getPlayerElement();
     player.src = audioUrl;
     player.play();
 }
 
-function PlayNextSong(songs, songIndex) {
-    const player = document.getElementById("music-player");
-    player.addEventListener("ended", function () {
-        const next = songIndex + 1;
-        if (next < songs.length) {
-            playTrack(songs, next);
-        } else {
-            playTrack(songs, 0); // loop
-        }
+function setupNextSong(songs, songIndex) {
+    const player = getPlayerElement();
+    player.addEventListener("ended", () => {
+        const nextIndex = songIndex + 1 < songs.length ? songIndex + 1 : 0;
+        playTrack(songs, nextIndex);
     }, {once: true});
 }
 
-function SetPlayingTitle(songTitle) {
-    document.getElementById("song-title").innerText = `${songTitle}`;
+function setPlayingTitle(songTitle) {
+    document.getElementById("song-title").textContent = songTitle;
 }
 
-function CreatePlayerElement() {
+function createPlayerElement() {
     if (!document.getElementById("music-player-container")) {
-        const playerContainer = document.createElement("div");
-        playerContainer.innerHTML = audioPlayerHtml;
-        document.body.appendChild(playerContainer);
+        const container = document.createElement("div");
+        container.innerHTML = audioPlayerHtml;
+        document.body.appendChild(container);
+
+        // Setup persistent timeupdate listener
+        const player = getPlayerElement();
+        player.addEventListener("timeupdate", () => {
+            localStorage.setItem('songProgress', player.currentTime);
+        });
     }
 }
 
-
-function SetPlayerFromLocalStorage() {
-    const player = document.getElementById("music-player");
+function setPlayerFromLocalStorage() {
+    const player = getPlayerElement();
     const currentSong = localStorage.getItem('currentSong');
     const songProgress = localStorage.getItem('songProgress');
     const songTitle = localStorage.getItem('songTitle');
-    if (currentSong && songProgress && songTitle) {
+
+    if (currentSong) {
         player.src = currentSong;
-        player.currentTime = songProgress;
         player.volume = 0.5;
-        SetPlayingTitle(songTitle);
+        player.currentTime = parseFloat(songProgress) || 0;
+
+        if (songTitle) {
+            setPlayingTitle(songTitle);
+        }
     }
 }
 
 const audioPlayerHtml = `
-  <div id="music-player-container" class="bg-black bg-opacity-50 p-2">
+  <div id="music-player-container" class="bg-dark p-2">
     <h2 class="display-4 text-white text-center fw-bold mb-2" id="current-song-title">
         Now Playing: 
-        <span id="song-title">
-        
-        </span>
+        <span id="song-title"></span>
     </h2>
     <audio id="music-player" class="w-100" controls>
       <source src="" type="audio/mpeg">

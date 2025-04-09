@@ -99,7 +99,7 @@ body {
 #music-player {
     width: 100%;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
-    margin-top: 0px;
+    margin-top: 0;
 }
 
 #current-song-title {
@@ -190,7 +190,7 @@ body {
 }
 
 #footer-container {
-    margin-top: auto; /* Pushes footer to bottom if page is short */
+    margin-top: auto;
 }
 
 #footer {

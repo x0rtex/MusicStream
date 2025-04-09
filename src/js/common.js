@@ -98,8 +98,8 @@ export function createFooter() {
     const footerContainer = document.getElementById("footer-container");
 
     const footerHTML = `
-        <footer id="footer" class="bg-dark text-white mt-5">
-            <div class="container py-5">
+        <footer id="footer" class="bg-dark text-white mt-auto py-3">
+            <div class="container">
                 <div class="row">
                     <div class="col-md-4 mb-4">
                         <h5>MusicStream</h5>
