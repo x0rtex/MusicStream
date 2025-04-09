@@ -57,6 +57,8 @@ npm run build
     - LOGIN_URL
     - REGISTER_URL
     - LOGOUT_URL
+    - VITE_COGNITO_USER_POOL_ID
+    - VITE_COGNITO_APP_CLIENT_ID
 2. Push to master branch to trigger automatic deployment:
 
 ```bash
