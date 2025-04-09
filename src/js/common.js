@@ -1,5 +1,3 @@
-// Test comment
-
 import "../css/styles.css";
 import {CognitoUserPool} from "amazon-cognito-identity-js";
 
