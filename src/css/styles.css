@@ -1,6 +1,6 @@
 ﻿/* Base styles */
 body {
-    font-family: "Arial", sans-serif;
+    font-family: "Trebuchet MS", sans-serif;
     padding-bottom: 80px; /* To prevent footer overlap */
     background-color: #f8f9fa;
 }
@@ -93,12 +93,30 @@ body {
     left: 0;
     right: 0;
     z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 }
 
 #music-player {
     width: 100%;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
-    margin-top: 5px;
+    margin-top: 0px;
+}
+
+#current-song-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #fff;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    white-space: nowrap;
+}
+
+#current-song-title span {
+    font-weight: normal;
+    font-size: 18px;
+    color: #eee;
+    margin-left: 10px;
 }
 
 /* Checkout form */
@@ -164,4 +182,19 @@ body {
 
 .profile-card p {
     font-size: 18px;
+}
+
+/* Footer */
+.text-muted {
+    color: #8a8d93 !important;
+}
+
+#footer-container {
+    margin-top: auto; /* Pushes footer to bottom if page is short */
+}
+
+#footer {
+    background-color: #1a1a1a;
+    border-top: 3px solid #2a2a2a;
+    padding: 2rem 0;
 }

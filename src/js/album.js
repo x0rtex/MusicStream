@@ -1,40 +1,25 @@
 import './common.js';
-import {
-    apiEndpoint,
-    getAlbumImageUrl,
-    getArtistImageUrl,
-    getSongAudioUrl,
-    getSongImageUrl,
-    placeholderImg
-} from "./common";
+import {apiEndpoint, getAlbumImageUrl, getArtistImageUrl, getSongImageUrl, placeholderImg} from "./common";
+import {playTrack} from "./player";
 
 document.addEventListener("DOMContentLoaded", () => {
     const albumId = getAlbumId();
     if (!albumId) return;
 
-    Promise.all([fetchAlbumDetails(albumId), fetchSongs(albumId)])
-        .then(() => {
-        })
-        .catch(handleError);
+    Promise.all([fetchAlbumDetails(albumId), fetchSongs(albumId)]).catch(handleError);
 });
 
 function getAlbumId() {
-    const params = new URLSearchParams(window.location.search);
-    const albumId = parseInt(params.get("AlbumID"), 10);
-
-    if (isNaN(albumId)) {
-        showError("Missing or invalid AlbumID.");
-        return null;
-    }
-
-    return albumId;
+    const albumId = parseInt(new URLSearchParams(window.location.search).get("AlbumID"), 10);
+    if (isNaN(albumId)) showError("Missing or invalid AlbumID.");
+    return isNaN(albumId) ? null : albumId;
 }
 
 function fetchAlbumDetails(albumId) {
     return fetch(`${apiEndpoint}/album?AlbumID=${albumId}`)
         .then(handleResponse)
-        .then((album) => {
-            updateAlbumInfo(album).then();
+        .then(async album => {
+            await updateAlbumInfo(album);
             document.title = album.Title || "MusicStream";
         })
         .catch(handleError);
@@ -43,77 +28,64 @@ function fetchAlbumDetails(albumId) {
 function fetchSongs(albumId) {
     return fetch(`${apiEndpoint}/songs?AlbumID=${albumId}`)
         .then(handleResponse)
-        .then((songs) => {
-            const playlist = songs.map((song) => getSongAudioUrl(song.SongID));
-            renderTracks(songs, playlist);
-
-            document.getElementById("play-album-button").addEventListener("click", () => {
-                playTrack(playlist, 0);
-            });
+        .then(songs => {
+            renderTracks(songs);
+            document.getElementById("play-album-button").addEventListener("click", () => playTrack(songs, 0));
         })
         .catch(handleError);
 }
 
 function fetchArtistDetails(artistID) {
     return fetch(`${apiEndpoint}/artists?ArtistID=${artistID}`)
-        .then((response) => response.json())
-        .then((artists) => {
-            const artist = artists.find((a) => a.ArtistID === artistID);
+        .then(handleResponse)
+        .then(artists => {
+            const artist = artists.find(a => a.ArtistID === artistID) || {};
             const artistName = artist.Name || "Unknown Artist";
-            const artistImageUrl = getArtistImageUrl(artist.ArtistID) || placeholderImg;
-            document.getElementById("artist-name").textContent = `By ${artistName || "Unknown Artist"}`;
-            document.getElementById("artist-image").src = artistImageUrl;
+            document.getElementById("artist-name").textContent = `By ${artistName}`;
+            document.getElementById("artist-image").src = getArtistImageUrl(artist.ArtistID) || placeholderImg;
         })
-        .catch((error) => {
-            console.error("Error fetching artist data:", error);
+        .catch(() => {
             document.getElementById("artist-name").textContent = "By Unknown Artist";
+            document.getElementById("artist-image").src = placeholderImg;
         });
 }
 
+
 async function updateAlbumInfo(album) {
-    if (!album || typeof album !== "object") {
-        showError("Album data is malformed or missing.");
-        return;
-    }
+    if (!album) return showError("Album data missing");
 
-    const albumTitle = album.Title || "Unknown Album Title";
-    const releaseYear = album.ReleaseYear || "Unknown Release Year";
-    const imageURL = getAlbumImageUrl(album.AlbumID) || "https://placehold.co/600x600?text=No+Image";
-    const artistID = album.ArtistID;
+    document.getElementById("album-title").textContent = album.Title || "Unknown Album";
+    document.getElementById("album-year").textContent = `Year: ${album.ReleaseYear || "Unknown"}`;
+    document.getElementById("album-artwork").src = getAlbumImageUrl(album.AlbumID) || placeholderImg;
 
-    document.getElementById("album-title").textContent = albumTitle;
-    document.getElementById("album-year").textContent = `Year: ${releaseYear}`;
-    document.getElementById("album-artwork").src = imageURL;
-
-    await fetchArtistDetails(artistID);
+    await fetchArtistDetails(album.ArtistID);
 }
 
-function renderTracks(songs, playlist) {
+function renderTracks(songs) {
     const container = document.getElementById("songs-list");
-
-    if (!songs.length) {
-        container.innerHTML = `<div class="alert alert-info">No tracks available</div>`;
-        return;
-    }
+    if (!songs.length) return container.innerHTML = `<div class="alert alert-info">No tracks available</div>`;
 
     container.innerHTML = songs.map((song, index) => `
-      <div class="song-list-item list-group-item" data-index="${index}">
-          <div class="d-flex justify-content-between align-items-center">
-              <div class="d-flex align-items-center">
-                  <img src="${getSongImageUrl(song.SongID)}" alt="Song Image" class="song-image me-3">
-                  <div>
-                      <h5 class="mb-1">${index + 1}. ${song.Title || "Untitled Track"}</h5>
-                      <small class="text-muted">${formatDuration(song.Duration)}</small>
-                  </div>
-              </div>
-              <button class="btn btn-sm btn-primary play-button">▶</button>
-          </div>
-      </div>
-  `).join("");
+        <div class="song-list-item list-group-item" data-index="${index}">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                    <img src="${getSongImageUrl(song.SongID) || placeholderImg}" alt="Song Image" class="song-image me-3">
+                    <div>
+                        <h5 class="mb-1">${index + 1}. ${song.Title || "Untitled Track"}</h5>
+                        <small class="text-muted">${formatDuration(song.Duration)}</small>
+                    </div>
+                </div>
+                <button class="btn btn-sm btn-primary play-button">▶</button>
+            </div>
+        </div>
+    `).join("");
 
-    const playButtons = container.querySelectorAll('.play-button');
-    playButtons.forEach((button, index) => {
-        button.addEventListener('click', () => playTrack(playlist, index));
+    // Event delegation for play buttons
+    container.addEventListener('click', event => {
+        const button = event.target.closest('.play-button');
+        if (!button) return;
+        const index = parseInt(button.closest('.song-list-item').dataset.index, 10);
+        playTrack(songs, index);
     });
 }
 
@@ -122,27 +94,6 @@ function formatDuration(seconds) {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${mins}:${secs.toString().padStart(2, "0")}`;
-}
-
-function playTrack(playlist, songIndex) {
-    const player = document.getElementById("music-player");
-    if (player) {
-        document.querySelectorAll(".song-list-item").forEach((item) => item.classList.remove("playing"));
-        const currentItem = document.querySelector(`.song-list-item[data-index="${songIndex}"]`);
-        if (currentItem) currentItem.classList.add("playing");
-
-        player.src = playlist[songIndex];
-        player.play();
-
-        player.addEventListener("ended", function () {
-            const next = songIndex + 1;
-            if (next < playlist.length) {
-                playTrack(playlist, next);
-            } else {
-                playTrack(playlist, 0); // loop
-            }
-        }, {once: true});
-    }
 }
 
 function handleResponse(response) {
