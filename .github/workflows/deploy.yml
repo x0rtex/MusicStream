@@ -32,6 +32,8 @@ jobs:
           LOGIN_URL: ${{ secrets.LOGIN_URL }}
           REGISTER_URL: ${{ secrets.REGISTER_URL }}
           LOGOUT_URL: ${{ secrets.LOGOUT_URL }}
+          VITE_COGNITO_USER_POOL_ID: ${{ secrets.VITE_COGNITO_USER_POOL_ID }}
+          VITE_COGNITO_APP_CLIENT_ID: ${{ secrets.VITE_COGNITO_APP_CLIENT_ID }}
 
       - name: Verify API Endpoint
         run: |
