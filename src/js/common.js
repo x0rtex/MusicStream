@@ -1,16 +1,16 @@
 import "../css/styles.css";
-import {CognitoUserPool} from "amazon-cognito-identity-js";
-import {initializePlayer} from "./player";
+import { CognitoUserPool } from "amazon-cognito-identity-js";
+import { initializePlayer } from "./player";
 
 document.addEventListener("DOMContentLoaded", () => {
-    createNavbar(); // Build navbar on load
-    createFooter(); // Build footer on load
-    initializePlayer(); // Initialize music player
+  createNavbar(); // Build navbar on load
+  createFooter(); // Build footer on load
+  initializePlayer(); // Initialize music player
 });
 
 const poolData = {
-    UserPoolId: process.env.VITE_COGNITO_USER_POOL_ID,
-    ClientId: process.env.VITE_COGNITO_APP_CLIENT_ID,
+  UserPoolId: process.env.VITE_COGNITO_USER_POOL_ID,
+  ClientId: process.env.VITE_COGNITO_APP_CLIENT_ID,
 };
 
 const userPool = new CognitoUserPool(poolData);
@@ -24,42 +24,29 @@ export const placeholderImg = "https://placehold.co/600x600?text=No+Image";
 
 // Create navbar based on user's session status
 function createNavbar() {
-    const navContainer = document.getElementById("nav-container");
-    const user = userPool.getCurrentUser();
-
-    if (user) {
-        user.getSession((err, session) => {
-            if (err || !session.isValid()) {
-                navContainer.innerHTML = getNavbarLoggedOut();
-            } else {
-                navContainer.innerHTML = getNavbarLoggedIn();
-                addLogoutListener();
-            }
-        });
-    } else {
-        navContainer.innerHTML = getNavbarLoggedOut();
-    }
+  const navContainer = document.getElementById("nav-container");
+  navContainer.innerHTML = getUniversalNavbar();
 }
 
 // Attach logout click listener
 function addLogoutListener() {
-    const logoutBtn = document.getElementById("logout-link");
-    if (logoutBtn) {
-        logoutBtn.addEventListener("click", (e) => {
-            e.preventDefault();
-            const user = userPool.getCurrentUser();
-            if (user) {
-                user.signOut();
-                console.log("User logged out.");
-                window.location.href = loginUrl;
-            }
-        });
-    }
+  const logoutBtn = document.getElementById("logout-link");
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      const user = userPool.getCurrentUser();
+      if (user) {
+        user.signOut();
+        console.log("User logged out.");
+        window.location.href = loginUrl;
+      }
+    });
+  }
 }
 
 // Navbar for logged-in users (NO Login/Register)
-function getNavbarLoggedIn() {
-    return `
+function getUniversalNavbar() {
+  return `
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container">
         <a class="navbar-brand" href="index.html">MusicStream</a>
@@ -68,24 +55,6 @@ function getNavbarLoggedIn() {
             <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
             <li class="nav-item"><a class="nav-link" href="profile.html">Profile</a></li>
             <li class="nav-item"><a class="nav-link" href="checkout.html">Checkout</a></li>
-            <li class="nav-item"><a class="nav-link" href="#" id="logout-link">Logout</a></li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-  `;
-}
-
-// Navbar for logged-out users (shows Login/Register)
-function getNavbarLoggedOut() {
-    return `
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container">
-        <a class="navbar-brand" href="index.html">MusicStream</a>
-        <div class="collapse navbar-collapse">
-          <ul class="navbar-nav ms-auto">
-            <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-            <li class="nav-item"><a class="nav-link" href="${registerURL}">Register</a></li>
             <li class="nav-item"><a class="nav-link" href="${loginUrl}">Login</a></li>
           </ul>
         </div>
@@ -95,9 +64,9 @@ function getNavbarLoggedOut() {
 }
 
 export function createFooter() {
-    const footerContainer = document.getElementById("footer-container");
+  const footerContainer = document.getElementById("footer-container");
 
-    const footerHTML = `
+  const footerHTML = `
         <footer id="footer" class="bg-dark text-white mt-auto py-3">
             <div class="container">
                 <div class="row">
@@ -135,24 +104,24 @@ export function createFooter() {
         </footer>
     `;
 
-    if (footerContainer) {
-        footerContainer.innerHTML = footerHTML;
-    }
+  if (footerContainer) {
+    footerContainer.innerHTML = footerHTML;
+  }
 }
 
 // Helper functions for media URLs
 export function getArtistImageUrl(artistId) {
-    return `${websiteUrl}/media/images/artists/${artistId}.webp`;
+  return `${websiteUrl}/media/images/artists/${artistId}.webp`;
 }
 
 export function getAlbumImageUrl(albumId) {
-    return `${websiteUrl}/media/images/albums/${albumId}.webp`;
+  return `${websiteUrl}/media/images/albums/${albumId}.webp`;
 }
 
 export function getSongImageUrl(songId) {
-    return `${websiteUrl}/media/images/songs/${songId}.webp`;
+  return `${websiteUrl}/media/images/songs/${songId}.webp`;
 }
 
 export function getSongAudioUrl(songId) {
-    return `${websiteUrl}/media/audio/songs/${songId}.mp3`;
+  return `${websiteUrl}/media/audio/songs/${songId}.mp3`;
 }
