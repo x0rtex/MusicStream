@@ -22,7 +22,7 @@ function fetchDisplayArtists() {
                         <div class="card-body text-center">
                           <h5 class="card-title">
                             <a href="artist.html?ArtistID=${artist.ArtistID}" 
-                                class="stretched-link text-decoration-none">
+                                class="stretched-link text-decoration-none gradient-text">
                                 ${artist.Name}
                             </a>
                           </h5>

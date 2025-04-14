@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="card-body text-center">
               <h5 class="card-title">
                 <a href="album.html?AlbumID=${album.AlbumID}" 
-                   class="stretched-link text-decoration-none">
+                   class="stretched-link text-decoration-none gradient-text ">
                   ${album.Title}
                 </a>
               </h5>

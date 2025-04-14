@@ -60,7 +60,7 @@ function addLogoutListener() {
 // Navbar for logged-in users (NO Login/Register)
 function getNavbarLoggedIn() {
     return `
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-2">
       <div class="container">
         <a class="navbar-brand" href="index.html">MusicStream</a>
         <div class="collapse navbar-collapse">
@@ -79,7 +79,7 @@ function getNavbarLoggedIn() {
 // Navbar for logged-out users (shows Login/Register)
 function getNavbarLoggedOut() {
     return `
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-2">
       <div class="container">
         <a class="navbar-brand" href="index.html">MusicStream</a>
         <div class="collapse navbar-collapse">
@@ -98,13 +98,13 @@ export function createFooter() {
     const footerContainer = document.getElementById("footer-container");
 
     const footerHTML = `
-        <footer id="footer" class="bg-dark text-white mt-auto py-3">
+        <footer id="footer" class="text-white mt-auto py-3">
             <div class="container">
                 <div class="row">
                     <div class="col-md-4 mb-4">
                         <h5>MusicStream</h5>
-                        <p class="text-muted">Your favorite music streaming platform.</p>
-                        <p class="text-muted">&copy; ${new Date().getFullYear()} MusicStream</p>
+                        <p>Your favorite music streaming platform.</p>
+                        <p>&copy; ${new Date().getFullYear()} MusicStream</p>
                     </div>
                     <div class="col-md-2 mb-4">
                         <h5>Quick Links</h5>

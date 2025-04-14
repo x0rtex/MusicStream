@@ -71,7 +71,7 @@ function renderTracks(songs) {
                 <div class="d-flex align-items-center">
                     <img src="${getSongImageUrl(song.SongID) || placeholderImg}" alt="Song Image" class="song-image me-3">
                     <div>
-                        <h5 class="mb-1">${index + 1}. ${song.Title || "Untitled Track"}</h5>
+                        <h5 class="mb-1 gradient-text">${index + 1}. ${song.Title || "Untitled Track"}</h5>
                         <small class="text-muted">${formatDuration(song.Duration)}</small>
                     </div>
                 </div>
