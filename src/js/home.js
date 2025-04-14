@@ -15,7 +15,7 @@ function fetchDisplayArtists() {
             document.getElementById("artists").innerHTML = artists
                 .map((artist) => `
                     <div class="col-md-3">
-                      <div class="artist-card card h-100">
+                      <div class="artist-card card h-100 fade-in-up">
                         <img src="${getArtistImageUrl(artist.ArtistID) || placeholderImg}" 
                              class="card-img-top" 
                              alt="${artist.Name}">

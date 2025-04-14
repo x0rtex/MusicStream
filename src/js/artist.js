@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 .map(
                     (album) => `
         <div class="col-md-4">
-          <div class="album-card card h-100">
+          <div class="album-card fade-in-up card h-100">
             <img src="${getAlbumImageUrl(album.AlbumID) || placeholderImg}" class="card-img-top" alt="${album.Title}">
             <div class="card-body text-center">
               <h5 class="card-title">

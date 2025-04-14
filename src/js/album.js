@@ -66,7 +66,7 @@ function renderTracks(songs) {
     if (!songs.length) return container.innerHTML = `<div class="alert alert-info">No tracks available</div>`;
 
     container.innerHTML = songs.map((song, index) => `
-        <div class="song-list-item list-group-item" data-index="${index}">
+        <div class="song-list-item list-group-item fade-in-up" data-index="${index}">
             <div class="d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center">
                     <img src="${getSongImageUrl(song.SongID) || placeholderImg}" alt="Song Image" class="song-image me-3">

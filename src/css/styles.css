@@ -40,6 +40,23 @@ body {
     font-size: 1.5rem;
 }
 
+/* Fade in animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+.fade-in-up {
+    animation: fadeInUp 0.6s ease-out;
+}
+
 /* Artist cards */
 .artist-card {
     position: relative;
@@ -103,12 +120,12 @@ body {
 
 .song-list-item:hover {
     background-color: #f8f9fa;
-    border-left-color: #0d6efd;
+    border-left-color: var(--secondary-color);
 }
 
 .song-list-item.playing:hover {
     background-color: #dbecd4;
-    border-left-color: #0d6efd;
+    border-left-color: var(--secondary-color);
 }
 
 .song-image {
@@ -176,7 +193,7 @@ body {
 }
 
 .checkout-form button {
-    background-color: #007bff;
+    background-color: var(--gradient-bg);
     color: white;
     border: none;
     font-size: 18px;
@@ -187,11 +204,11 @@ body {
 }
 
 .checkout-form button:hover {
-    background-color: #0056b3;
+    background-color: var(--gradient-bg);
 }
 
 .checkout-form button:active {
-    background-color: #003f8f;
+    background-color: var(--gradient-bg);
 }
 
 /* Profile page */

@@ -81,7 +81,7 @@ function setPlayerFromLocalStorage() {
 
 const audioPlayerHtml = `
   <div id="music-player-container" class="bg-dark p-2">
-    <h2 class="display-4 text-white text-center fw-bold mb-2" id="current-song-title">
+    <h2 class="display-4 text-white text-center fw-bold mb-2 fade-in-up" id="current-song-title">
         Now Playing: 
         <span id="song-title"></span>
     </h2>
